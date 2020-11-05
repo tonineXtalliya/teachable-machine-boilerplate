@@ -106,7 +106,7 @@ class Main {
   async animate() {
     if (this.videoPlaying) {
       // Get image data from video element
-      const image = tf.fromPixels(this.video);
+      const image = tf.browser.fromPixels(this.video);
 
       let logits;
       // 'conv_preds' is the logits activation of MobileNet.
