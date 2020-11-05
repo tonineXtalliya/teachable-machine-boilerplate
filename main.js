@@ -73,9 +73,7 @@ class Main {
       devices.push(device);
       navigator.mediaDevices
         .getUserMedia({
-          deviceId: {
-            exact: devices[0][2].deviceId,
-          },
+          deviceId: devices[0][2].deviceId,
         })
         .then((stream) => {
           this.video.srcObject = stream;
