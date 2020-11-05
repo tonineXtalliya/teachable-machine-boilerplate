@@ -65,8 +65,20 @@ class Main {
     }
 
     // Setup webcam
+    const devices = [];
+    navigator.mediaDevices.enumerateDevices().then((device) => {
+      devices.push(device);
+    });
+    let cameraOptions = {
+      value: devices[2].deviceId,
+    };
+
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: false })
+      .getUserMedia({
+        deviceId: {
+          exact: cameraOptions.value,
+        },
+      })
       .then((stream) => {
         this.video.srcObject = stream;
         this.video.width = IMAGE_SIZE;
