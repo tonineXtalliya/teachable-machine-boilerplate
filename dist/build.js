@@ -101,9 +101,7 @@ var Main = function () {
     this.getMediaDevices().then(function (device) {
       devices.push(device);
       navigator.mediaDevices.getUserMedia({
-        deviceId: {
-          exact: devices[0][2].deviceId
-        }
+        deviceId: devices[0][2].deviceId
       }).then(function (stream) {
         _this.video.srcObject = stream;
         _this.video.width = IMAGE_SIZE;
