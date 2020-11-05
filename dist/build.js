@@ -95,22 +95,19 @@ var Main = function () {
 
     // Setup webcam
     var devices = [];
-    // let cameraOptions = {
-    //   value: devices[2].deviceId,
-    // };
     this.getMediaDevices().then(function (device) {
       devices.push(device);
-      navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(function (stream) {
-        _this.video.srcObject = stream;
-        _this.video.width = IMAGE_SIZE;
-        _this.video.height = IMAGE_SIZE;
+    });
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(function (stream) {
+      _this.video.srcObject = stream;
+      _this.video.width = IMAGE_SIZE;
+      _this.video.height = IMAGE_SIZE;
 
-        _this.video.addEventListener("playing", function () {
-          return _this.videoPlaying = true;
-        });
-        _this.video.addEventListener("paused", function () {
-          return _this.videoPlaying = false;
-        });
+      _this.video.addEventListener("playing", function () {
+        return _this.videoPlaying = true;
+      });
+      _this.video.addEventListener("paused", function () {
+        return _this.videoPlaying = false;
       });
     });
   }
