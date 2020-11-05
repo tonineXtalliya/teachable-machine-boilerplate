@@ -95,27 +95,26 @@ var Main = function () {
 
     // Setup webcam
     var devices = [];
-    navigator.mediaDevices.enumerateDevices().then(function (device) {
+    // let cameraOptions = {
+    //   value: devices[2].deviceId,
+    // };
+    this.getMediaDevices().then(function (device) {
       devices.push(device);
-    });
-    var cameraOptions = {
-      value: devices[2].deviceId
-    };
+      navigator.mediaDevices.getUserMedia({
+        deviceId: {
+          exact: devices[0][2].deviceId
+        }
+      }).then(function (stream) {
+        _this.video.srcObject = stream;
+        _this.video.width = IMAGE_SIZE;
+        _this.video.height = IMAGE_SIZE;
 
-    navigator.mediaDevices.getUserMedia({
-      deviceId: {
-        exact: cameraOptions.value
-      }
-    }).then(function (stream) {
-      _this.video.srcObject = stream;
-      _this.video.width = IMAGE_SIZE;
-      _this.video.height = IMAGE_SIZE;
-
-      _this.video.addEventListener("playing", function () {
-        return _this.videoPlaying = true;
-      });
-      _this.video.addEventListener("paused", function () {
-        return _this.videoPlaying = false;
+        _this.video.addEventListener("playing", function () {
+          return _this.videoPlaying = true;
+        });
+        _this.video.addEventListener("paused", function () {
+          return _this.videoPlaying = false;
+        });
       });
     });
   }
@@ -160,17 +159,37 @@ var Main = function () {
       cancelAnimationFrame(this.timer);
     }
   }, {
+    key: "getMediaDevices",
+    value: function getMediaDevices() {
+      return regeneratorRuntime.async(function getMediaDevices$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return regeneratorRuntime.awrap(navigator.mediaDevices.enumerateDevices());
+
+            case 2:
+              return _context2.abrupt("return", _context2.sent);
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, null, this);
+    }
+  }, {
     key: "animate",
     value: function animate() {
       var _this2 = this;
 
       var image, logits, infer, numClasses, res, i, exampleCount;
-      return regeneratorRuntime.async(function animate$(_context2) {
+      return regeneratorRuntime.async(function animate$(_context3) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               if (!this.videoPlaying) {
-                _context2.next = 14;
+                _context3.next = 14;
                 break;
               }
 
@@ -196,17 +215,17 @@ var Main = function () {
               numClasses = this.knn.getNumClasses();
 
               if (!(numClasses > 0)) {
-                _context2.next = 12;
+                _context3.next = 12;
                 break;
               }
 
               // If classes have been added run predict
               logits = infer();
-              _context2.next = 10;
+              _context3.next = 10;
               return regeneratorRuntime.awrap(this.knn.predictClass(logits, TOPK));
 
             case 10:
-              res = _context2.sent;
+              res = _context3.sent;
 
 
               for (i = 0; i < NUM_CLASSES; i++) {
@@ -240,7 +259,7 @@ var Main = function () {
 
             case 15:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
         }
       }, null, this);
