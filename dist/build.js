@@ -94,7 +94,19 @@ var Main = function () {
     }
 
     // Setup webcam
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(function (stream) {
+    var devices = [];
+    navigator.mediaDevices.enumerateDevices().then(function (device) {
+      devices.push(device);
+    });
+    var cameraOptions = {
+      value: devices[2].deviceId
+    };
+
+    navigator.mediaDevices.getUserMedia({
+      deviceId: {
+        exact: cameraOptions.value
+      }
+    }).then(function (stream) {
       _this.video.srcObject = stream;
       _this.video.width = IMAGE_SIZE;
       _this.video.height = IMAGE_SIZE;
