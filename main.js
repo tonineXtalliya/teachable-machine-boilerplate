@@ -65,34 +65,33 @@ class Main {
     }
 
     // Setup webcam
-    const devices = [];
-    navigator.mediaDevices.enumerateDevices().then((device) => {
+    let devices = [];
+    // let cameraOptions = {
+    //   value: devices[2].deviceId,
+    // };
+    this.getMediaDevices().then((device) => {
       devices.push(device);
+      navigator.mediaDevices
+        .getUserMedia({
+          deviceId: {
+            exact: devices[0][2].deviceId,
+          },
+        })
+        .then((stream) => {
+          this.video.srcObject = stream;
+          this.video.width = IMAGE_SIZE;
+          this.video.height = IMAGE_SIZE;
+
+          this.video.addEventListener(
+            "playing",
+            () => (this.videoPlaying = true)
+          );
+          this.video.addEventListener(
+            "paused",
+            () => (this.videoPlaying = false)
+          );
+        });
     });
-    let cameraOptions = {
-      value: devices[2].deviceId,
-    };
-
-    navigator.mediaDevices
-      .getUserMedia({
-        deviceId: {
-          exact: cameraOptions.value,
-        },
-      })
-      .then((stream) => {
-        this.video.srcObject = stream;
-        this.video.width = IMAGE_SIZE;
-        this.video.height = IMAGE_SIZE;
-
-        this.video.addEventListener(
-          "playing",
-          () => (this.videoPlaying = true)
-        );
-        this.video.addEventListener(
-          "paused",
-          () => (this.videoPlaying = false)
-        );
-      });
   }
 
   async bindPage() {
@@ -113,6 +112,10 @@ class Main {
   stop() {
     this.video.pause();
     cancelAnimationFrame(this.timer);
+  }
+
+  async getMediaDevices() {
+    return await navigator.mediaDevices.enumerateDevices();
   }
 
   async animate() {
