@@ -72,9 +72,7 @@ class Main {
     this.getMediaDevices().then((device) => {
       devices.push(device);
       navigator.mediaDevices
-        .getUserMedia({
-          deviceId: devices[0][2].deviceId,
-        })
+        .getUserMedia({ video: true, audio: false })
         .then((stream) => {
           this.video.srcObject = stream;
           this.video.width = IMAGE_SIZE;
