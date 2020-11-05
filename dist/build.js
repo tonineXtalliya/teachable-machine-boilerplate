@@ -163,7 +163,7 @@ var Main = function () {
               }
 
               // Get image data from video element
-              image = tf.fromPixels(this.video);
+              image = tf.browser.fromPixels(this.video);
               logits = void 0;
               // 'conv_preds' is the logits activation of MobileNet.
 
